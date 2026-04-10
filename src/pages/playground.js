@@ -21,7 +21,7 @@ export async function renderPlayground({ id }, app) {
 
   const codigoInicial =
     tad.ejemplos?.[0]?.codigo ||
-    `# Importá la clase del TAD y empezá a usarla.\n# La implementación está oculta — solo conocés su especificación.\n\n`;
+    `# Las funciones del TAD ya están disponibles, usálas directamente.\n\n`;
 
   app.innerHTML = `
     <div class="playground">
@@ -29,7 +29,7 @@ export async function renderPlayground({ id }, app) {
         <div>
           <a class="back" href="${ROUTES.TAD(tad.id)}">← Volver al TAD</a>
           <h1>${escapeHtml(tad.nombre)} · Playground</h1>
-          <p class="hint">Clase disponible: <code>${escapeHtml(tad.python_class_name)}</code> (ya importada)</p>
+          <p class="hint">Las funciones del TAD están disponibles directamente — no hace falta importar nada.</p>
         </div>
         <div class="pg-actions">
           <button class="btn btn-primary" id="run-btn" disabled>Ejecutar (Ctrl+Enter)</button>
@@ -97,7 +97,6 @@ export async function renderPlayground({ id }, app) {
     worker.postMessage({
       type: 'init',
       bytecode_b64: tad.bytecode_b64,
-      className: tad.python_class_name,
     });
   }
 

@@ -6,27 +6,28 @@ import { toastError, toastSuccess, toast } from '../components/toast.js';
 import { navigate } from '../router.js';
 import { ROUTES } from '../constants.js';
 
-const SOURCE_TEMPLATE = `class Pila:
-    """Implementación interna del TAD Pila — los alumnos NO ven este código."""
+const SOURCE_TEMPLATE = `# Implementación interna — los alumnos NO ven este código.
+# Usá funciones sueltas: el alumno las llama directamente (sin prefijo de clase).
 
-    def __init__(self):
-        self._items = []
+def crearPila():
+    p = []
+    return p
 
-    def push(self, x):
-        self._items.append(x)
+def push(p, x):
+    p.append(x)
 
-    def pop(self):
-        if not self._items:
-            raise IndexError("pila vacía")
-        return self._items.pop()
+def pop(p):
+    if len(p) == 0:
+        raise IndexError("pila vacía")
+    return p.pop()
 
-    def tope(self):
-        if not self._items:
-            raise IndexError("pila vacía")
-        return self._items[-1]
+def tope(p):
+    if len(p) == 0:
+        raise IndexError("pila vacía")
+    return p[-1]
 
-    def es_vacia(self):
-        return len(self._items) == 0
+def esVacia(p):
+    return len(p) == 0
 `;
 
 const SPEC_TEMPLATE = `# TAD Pila
@@ -35,17 +36,11 @@ Una **Pila** es una colección LIFO (last-in, first-out).
 
 ## Operaciones
 
-- \`Pila()\` → crea una pila vacía
-- \`push(x)\` → apila el elemento \`x\`
-- \`pop()\` → devuelve y elimina el tope
-- \`tope()\` → devuelve el tope sin eliminarlo
-- \`es_vacia()\` → \`True\` si la pila no tiene elementos
-
-## Axiomas
-
-- \`Pila().es_vacia() == True\`
-- \`p.push(x); p.tope() == x\`
-- \`p.push(x); p.pop() == x\`
+- \`crearPila()\` → crea una pila vacía
+- \`push(p, x)\` → apila el elemento \`x\` en la pila \`p\`
+- \`pop(p)\` → devuelve y elimina el tope de \`p\`
+- \`tope(p)\` → devuelve el tope sin eliminarlo
+- \`esVacia(p)\` → \`True\` si la pila no tiene elementos
 `;
 
 export async function renderDocenteTadForm(id, app) {
@@ -58,7 +53,7 @@ export async function renderDocenteTadForm(id, app) {
     ejemplos: [
       {
         titulo: 'Uso básico',
-        codigo: 'p = Pila()\np.push(1)\np.push(2)\nprint(p.pop())  # 2\nprint(p.tope())  # 1',
+        codigo: 'p = crearPila()\npush(p, 1)\npush(p, 2)\nprint(pop(p))   # 2\nprint(tope(p))  # 1',
       },
     ],
   };
@@ -98,8 +93,8 @@ export async function renderDocenteTadForm(id, app) {
         <label>Nombre del TAD
           <input name="nombre" required value="${escapeAttr(inicial.nombre)}" />
         </label>
-        <label>Nombre de la clase Python
-          <input name="python_class_name" required value="${escapeAttr(inicial.python_class_name)}" />
+        <label>Identificador interno (ej: Libro, Libreria)
+          <input name="python_class_name" value="${escapeAttr(inicial.python_class_name)}" />
         </label>
         <label class="full">Descripción corta
           <input name="descripcion" value="${escapeAttr(inicial.descripcion)}" />

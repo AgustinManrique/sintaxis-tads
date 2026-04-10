@@ -14,7 +14,6 @@ import { PYODIDE_INDEX_URL } from '../constants.js';
 
 let pyodide = null;
 let tadInstalled = false;
-let className = null;
 
 async function ensurePyodide() {
   if (pyodide) return pyodide;
@@ -24,11 +23,9 @@ async function ensurePyodide() {
   return pyodide;
 }
 
-async function installTad(bytecode_b64, cls) {
+async function installTad(bytecode_b64) {
   const py = await ensurePyodide();
-  className = cls;
   py.globals.set('__bytecode_b64__', bytecode_b64);
-  py.globals.set('__class_name__', cls);
   py.runPython(`
 import marshal, base64, sys, types
 _data = base64.b64decode(__bytecode_b64__)
@@ -36,9 +33,6 @@ _code = marshal.loads(_data)
 _mod = types.ModuleType('tad')
 exec(_code, _mod.__dict__)
 sys.modules['tad'] = _mod
-# Validamos que la clase exista
-if __class_name__ and not hasattr(_mod, __class_name__):
-    raise ImportError(f"El TAD no expone la clase '{__class_name__}'")
   `);
   tadInstalled = true;
   postMessage({ type: 'ready' });
@@ -56,20 +50,19 @@ async function runUserCode(code) {
     return;
   }
 
-  // Redirigir stdout/stderr a buffers Python y ejecutar el código del alumno.
+  // Inyectar todas las funciones/clases del TAD en el namespace del alumno.
   py.globals.set('__user_code__', code);
   let resultPy;
   try {
     resultPy = py.runPython(`
-import io, sys, traceback
+import io, sys, traceback, tad as _tad_module
+_tad_ns = {k: v for k, v in vars(_tad_module).items() if not k.startswith('_')}
 _out, _err = io.StringIO(), io.StringIO()
 _old_out, _old_err = sys.stdout, sys.stderr
 sys.stdout, sys.stderr = _out, _err
 _error = None
 try:
-    # Importamos automáticamente la clase principal del TAD para comodidad
-    from tad import ${className} as ${className}
-    exec(__user_code__, {'__name__': '__main__', '${className}': ${className}})
+    exec(__user_code__, {'__name__': '__main__', **_tad_ns})
 except Exception:
     _error = traceback.format_exc()
 finally:
@@ -93,7 +86,7 @@ self.onmessage = async (e) => {
   const msg = e.data;
   try {
     if (msg?.type === 'init') {
-      await installTad(msg.bytecode_b64, msg.className);
+      await installTad(msg.bytecode_b64);
     } else if (msg?.type === 'run') {
       await runUserCode(msg.code);
     }
