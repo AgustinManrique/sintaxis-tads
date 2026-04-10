@@ -15,9 +15,7 @@ let pyodide = null;
 async function ensurePyodide() {
   if (pyodide) return pyodide;
   postMessage({ type: 'progress', message: 'Cargando Pyodide...' });
-  // Importar el loader desde el CDN dentro del worker
-  importScripts(`${PYODIDE_INDEX_URL}pyodide.js`);
-  // eslint-disable-next-line no-undef
+  const { loadPyodide } = await import(/* @vite-ignore */ `${PYODIDE_INDEX_URL}pyodide.mjs`);
   pyodide = await loadPyodide({ indexURL: PYODIDE_INDEX_URL });
   postMessage({ type: 'ready' });
   return pyodide;

@@ -19,8 +19,7 @@ let className = null;
 async function ensurePyodide() {
   if (pyodide) return pyodide;
   postMessage({ type: 'progress', message: 'Cargando entorno Python...' });
-  importScripts(`${PYODIDE_INDEX_URL}pyodide.js`);
-  // eslint-disable-next-line no-undef
+  const { loadPyodide } = await import(/* @vite-ignore */ `${PYODIDE_INDEX_URL}pyodide.mjs`);
   pyodide = await loadPyodide({ indexURL: PYODIDE_INDEX_URL });
   return pyodide;
 }
