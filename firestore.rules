@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function esLogueado() {
+      return request.auth != null;
+    }
+
+    function esDocente() {
+      return esLogueado()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'docente';
+    }
+
+    // Perfiles de usuario: cada uno se crea/lee a sí mismo.
+    // Los docentes pueden leer cualquier usuario (para listas internas).
+    match /users/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || esDocente());
+      allow create: if request.auth != null && request.auth.uid == uid
+                    && request.resource.data.role == 'alumno';
+      // Solo el propio usuario puede editar campos no críticos.
+      // El cambio de rol se hace manualmente desde Firebase Console (bootstrap).
+      allow update: if request.auth != null && request.auth.uid == uid
+                    && request.resource.data.role == resource.data.role;
+      allow delete: if false;
+    }
+
+    // TADs públicos (autenticados): contienen spec, bytecode, ejemplos.
+    // NO contienen el source Python.
+    match /tads/{tadId} {
+      allow read: if esLogueado();
+      allow create, update, delete: if esDocente();
+    }
+
+    // Implementación privada: SOLO docentes pueden leerla/escribirla.
+    match /tads_private/{tadId} {
+      allow read, write: if esDocente();
+    }
+  }
+}
