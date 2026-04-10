@@ -1,6 +1,9 @@
 /* ── Landing ─────────────────────────────────────────────────── */
 .landing {
   padding: 0 20px 60px;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(30, 64, 175, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 85% 30%, rgba(109, 40, 217, 0.05) 0%, transparent 60%);
 }
 
 .landing-hero {
@@ -12,7 +15,7 @@
 
 .landing-badge {
   display: inline-block;
-  background: var(--primary-soft);
+  background: linear-gradient(135deg, var(--primary-soft), var(--violet-soft));
   color: var(--primary);
   border: 1px solid var(--primary-light);
   border-radius: 999px;
@@ -30,7 +33,7 @@
   letter-spacing: -0.04em;
   line-height: 1.1;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, var(--text) 40%, var(--primary));
+  background: linear-gradient(135deg, var(--text) 30%, #1e40af 65%, #6d28d9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -78,14 +81,30 @@
 .feature-icon {
   width: 42px;
   height: 42px;
-  background: var(--primary-soft);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 14px;
+}
+
+.feature-card:nth-child(1) .feature-icon {
+  background: var(--primary-soft);
   color: var(--primary);
 }
+.feature-card:nth-child(1):hover { border-color: var(--primary-light); }
+
+.feature-card:nth-child(2) .feature-icon {
+  background: var(--violet-soft);
+  color: var(--violet);
+}
+.feature-card:nth-child(2):hover { border-color: var(--violet-light); }
+
+.feature-card:nth-child(3) .feature-icon {
+  background: var(--teal-soft);
+  color: var(--teal);
+}
+.feature-card:nth-child(3):hover { border-color: var(--teal-light); }
 
 .feature-card h3 {
   font-size: 0.95rem;

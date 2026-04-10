@@ -15,6 +15,15 @@
   --danger-soft: #fef2f2;
   --success: #047857;
   --success-soft: #f0fdf4;
+  --violet: #6d28d9;
+  --violet-soft: #f5f3ff;
+  --violet-light: #ddd6fe;
+  --teal: #0f766e;
+  --teal-soft: #f0fdfa;
+  --teal-light: #99f6e4;
+  --amber: #b45309;
+  --amber-soft: #fffbeb;
+  --amber-light: #fde68a;
   --code-bg: #0f172a;
   --code-text: #e2e8f0;
   --radius: 12px;
@@ -134,14 +143,14 @@ label input, label textarea { margin-top: 5px; font-weight: 400; }
 .btn:active { transform: translateY(0); }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, #1e40af, #2563eb);
   color: #fff;
-  box-shadow: 0 1px 2px rgba(30, 64, 175, 0.25), 0 4px 12px rgba(30, 64, 175, 0.18);
+  box-shadow: 0 1px 2px rgba(30, 64, 175, 0.25), 0 4px 12px rgba(30, 64, 175, 0.2);
 }
 .btn-primary:hover {
-  background: var(--primary-hover);
+  background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
   color: #fff;
-  box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3), 0 6px 20px rgba(30, 64, 175, 0.22);
+  box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3), 0 6px 20px rgba(30, 64, 175, 0.25);
 }
 .btn-primary:disabled {
   background: #94a3b8;
