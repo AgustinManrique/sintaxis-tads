@@ -29,7 +29,7 @@ export async function renderCatalogo(_params, app) {
       <a class="card" href="${ROUTES.TAD(t.id)}">
         <h2>${escapeHtml(t.nombre)}</h2>
         <p>${escapeHtml(t.descripcion || 'Sin descripción')}</p>
-        <span class="card-meta">Clase: <code>${escapeHtml(t.python_class_name || '?')}</code></span>
+        <span class="card-meta">${escapeHtml(t.descripcion || '')}</span>
       </a>
     `
       )

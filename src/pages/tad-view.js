@@ -18,9 +18,6 @@ export async function renderTadView({ id }, app) {
           <div>
             <h1>${escapeHtml(tad.nombre)}</h1>
             <p class="tad-desc">${escapeHtml(tad.descripcion || '')}</p>
-            <p class="tad-meta">
-              Clase Python: <code>${escapeHtml(tad.python_class_name)}</code>
-            </p>
           </div>
           <div class="tad-actions">
             <a class="btn btn-primary" href="${ROUTES.PLAYGROUND(tad.id)}">Abrir playground</a>
