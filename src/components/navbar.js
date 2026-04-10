@@ -15,9 +15,10 @@ export function renderNavbar(host) {
           ${docente ? `<a href="${ROUTES.DOCENTE}">Panel docente</a>` : ''}
           ${
             user
-              ? `<span class="nav-user">${escapeHtml(profile?.nombre || user.email)}</span>
-                 <button class="btn btn-ghost" id="nav-logout">Salir</button>`
-              : `<a class="btn btn-primary" href="${ROUTES.LOGIN}">Ingresar</a>`
+              ? `<span class="nav-sep"></span>
+                 <span class="nav-user">${escapeHtml(profile?.nombre || user.email)}</span>
+                 <button class="btn btn-ghost btn-sm" id="nav-logout">Salir</button>`
+              : `<a class="btn btn-primary btn-sm" href="${ROUTES.LOGIN}">Ingresar</a>`
           }
         </div>
       </nav>
